@@ -1,5 +1,6 @@
 import imaplib
 import email
+import json
 from bs4 import BeautifulSoup
 
 EMAIL_USER = "xxx@gmail.com"
@@ -12,6 +13,7 @@ mail.login(EMAIL_USER, EMAIL_PASS)
 mail.select("inbox")
 
 result, data = mail.search(None, '(UNSEEN FROM "notificacion@notificacionesbaccr.com")')
+transactions = []
 
 for num in data[0].split():
     result, msg_data = mail.fetch(num, "(RFC822)")
@@ -43,10 +45,14 @@ for num in data[0].split():
                 fecha = value
             elif "Monto" in key:
                 monto = value
-                
-    print(f"Fecha: {fecha}")
-    print(f"Comercio: {comercio}")
-    print(f"Monto: {monto}")
-    print("-" * 40)
+    
+    if comercio and fecha and monto:
+        transactions.append({
+            "fecha": fecha,
+            "comercio": comercio,
+            "monto": monto
+        })
+print(transactions)
 
+    
 mail.logout()
