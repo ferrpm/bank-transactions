@@ -1,6 +1,5 @@
 import imaplib
 import email
-import json
 from bs4 import BeautifulSoup
 
 EMAIL_USER = "xxx@gmail.com"
